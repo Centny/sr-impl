@@ -14,7 +14,7 @@ import (
 type SrQH struct {
 }
 
-func (srq *SrQH) Args(s *sr.SRH_Q, hs *routing.HTTPSession, aid, ver, sp, sf string) (util.Map, error) {
+func (srq *SrQH) Args(s *sr.SRH_Q, hs *routing.HTTPSession, aid, ver, dev, sp, sf string) (util.Map, error) {
 	return nil, nil
 }
 func (srq *SrQH) Proc(s *sr.SRH_Q, i *sr.SRH_Q_I) error {
