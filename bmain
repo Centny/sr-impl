@@ -1,0 +1,11 @@
+#!/bin/bash
+##############################
+#####Setting Environments#####
+echo "Setting Environments"
+set -e
+export PWD=`pwd`
+export LD_LIBRARY_PATH=/usr/local/lib:/usr/lib
+export PATH=$PATH:$GOPATH/bin:$HOME/bin:$GOROOT/bin
+export GOPATH=$PWD:$GOPATH
+echo "Build main"
+go build org.cny.sr/main
