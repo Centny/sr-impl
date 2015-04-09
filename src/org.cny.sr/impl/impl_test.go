@@ -94,8 +94,18 @@ func run_t(hs *routing.HTTPSession, t *testing.T) {
 		t.Error(err.Error())
 	}
 	fmt.Println(v)
+	//
+	fmt.Println("------->")
+	v, err = sq.ListPkg(nil, hs, "", "")
+	if err != nil {
+		t.Error(err.Error())
+		return
+	}
+	fmt.Println(v)
+	fmt.Println(sq.ListPkg(nil, hs, "org.cny", "a"))
+	//
 	sq.ListSr(nil, hs, "org.cny", "0.0.1", "5518e0790cbd510cd7000", "", 0, 0)
-	sq.Args(nil, nil, "", "", "", "")
+	sq.Args(nil, nil, "", "", "", "", "")
 	NewSr("/tmp")
 	//
 	hs.SetVal("type", "ssss->")

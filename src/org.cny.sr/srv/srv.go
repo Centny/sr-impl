@@ -43,7 +43,8 @@ func run(args []string) {
 		fmt.Errorf("connection to DB err:%v", err.Error())
 		return
 	}
-	dbcon.Db_ = ss.DB(conf.SrDbName())
+	dbcon.Con_ = ss
+	dbcon.DbName_ = conf.SrDbName()
 	//
 	mux := http.NewServeMux()
 	HSrvMux(mux, "", "www")

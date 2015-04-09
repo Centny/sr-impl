@@ -8,7 +8,7 @@ import (
 	"org.cny.sr/dbcon"
 )
 
-const TDbCon string = "cny:123@loc.srv:27017/cny"
+const TDbCon string = "cny:123@loc.srv:27017/test"
 
 var Cfg util.Fcfg = util.Fcfg{}
 
@@ -19,5 +19,6 @@ func init() {
 		fmt.Errorf("connection to DB err:%v", err.Error())
 		return
 	}
-	dbcon.Db_ = ss.DB("cny")
+	dbcon.Con_ = ss
+	dbcon.DbName_ = "test"
 }

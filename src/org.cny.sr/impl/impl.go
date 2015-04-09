@@ -122,7 +122,36 @@ func (srq *SrQH) ListSr(s *sr.SRH_Q, hs *routing.HTTPSession, aid, ver, prev, de
 		}
 	}
 }
-
+func (srq *SrQH) ListPkg(s *sr.SRH_Q, hs *routing.HTTPSession, aid, dev string) (interface{}, error) {
+	qa := bson.M{}
+	if len(aid) > 0 {
+		qa["aid"] = aid
+	}
+	if len(dev) > 0 {
+		qa["dev"] = dev
+	}
+	pipe := []bson.M{
+		bson.M{
+			"$match": qa,
+		}, bson.M{
+			"$group": bson.M{
+				"_id": "$aid",
+				"vers": bson.M{
+					"$addToSet": "$ver",
+				},
+			},
+		}, bson.M{
+			"$project": bson.M{
+				"_id":  0,
+				"aid":  "$_id",
+				"vers": "$vers",
+			},
+		},
+	}
+	res_l := []map[string]interface{}{}
+	err := dbcon.Db().C("sr").Pipe(pipe).All(&res_l)
+	return res_l, err
+}
 func NewSr(r string) (*sr.SR, *sr.SRH_Q) {
 	return sr.NewSR3(r, &SrQH{})
 }
