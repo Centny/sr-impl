@@ -18,7 +18,7 @@ mkdir $o_srv
 mkdir $o_srv/conf
 mkdir $o_srv/www
 go build -o $o_srv/sr org.cny.sr/main
-cp srid $o_srv
+cp srd $o_srv
 cp conf/sr.properties $o_srv/conf
 if [ "$1" != "" ];then
 	curl -o $o_srv/srvd_i $1
