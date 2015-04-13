@@ -11,23 +11,28 @@ o_dir=build
 rm -rf $o_dir
 mkdir $o_dir
 
-#### Package fvm ####
+#### Package ####
+n_srv=sr
 v_srv=0.0.1
-o_srv=$o_dir/sr
+##
+d_srv="$n_srv"d
+o_srv=$o_dir/$n_srv
 mkdir $o_srv
 mkdir $o_srv/conf
 mkdir $o_srv/www
-go build -o $o_srv/sr org.cny.sr/main
-cp srd $o_srv
+go build -o $o_srv/$n_srv org.cny.sr/main
+cp $d_srv $o_srv
 cp conf/sr.properties $o_srv/conf
 cp conf/local.properties $o_srv/conf
+
+###
 if [ "$1" != "" ];then
 	curl -o $o_srv/srvd_i $1
 	chmod +x $o_srv/srvd_i
-	echo "./srvd_i \$1 srd" >$o_srv/install.sh
+	echo "./srvd_i \$1 $d_srv \$2" >$o_srv/install.sh
 	chmod +x $o_srv/install.sh
 fi 
 cd $o_dir
-zip -r sr.zip sr
+zip -r $n_srv.zip $n_srv
 cd ../
-echo "Package sr..."
+echo "Package $n_srv..."

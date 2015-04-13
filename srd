@@ -10,30 +10,33 @@
 export LD_LIBRARY_PATH=/usr/local/lib
 RETVAL=0
 SRV_HOME=RV_SRVD_HOME
-SRV_D=$SRV_HOME
-srv_n=srd
+exe_n=sr
+srv_n="$exe_n"d
 usr_n=$srv_n
+if [ "$SRVD_USR" != "" ];then
+    usr_n=$SRVD_USR
+fi
+
+##
+SRV_D=$SRV_HOME
 PIDFILE=/var/run/$srv_n.pid
 lockfile=/var/lock/$srv_n.lock
 export GOPATH=$SRV_HOME
 exec=$SRV_D/sr
-if [ ! "$SRVD_USR" = "" ];then
-    usr_n=$SRVD_USR
-fi
 start() {
     [ -x $exec ] || exit 5
 
     umask 077
 
-        echo -n "Starting $srv_n server: "
-        daemonize -o /var/log/$srv_n/out.log -e /var/log/$srv_n/err.log -c $SRV_D -p $PIDFILE -u $usr_n -l $lockfile $exec conf/sr.properties
+        echo -n "Starting $usr_n server: "
+        daemonize -o /var/log/$srv_n/out.log -e /var/log/$srv_n/err.log -c $SRV_D -p $PIDFILE -u $usr_n -l $lockfile $exec conf/$exe_n.properties
         RETVAL=$?
     echo
         [ $RETVAL -eq 0 ] && touch $lockfile
     return $RETVAL
 }
 stop() {
-        echo -n "Shutting down $srv_n server: "
+        echo -n "Shutting down $usr_n server: "
         killproc -p "$PIDFILE" $exec
         RETVAL=$?
         echo
