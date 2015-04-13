@@ -20,6 +20,7 @@ mkdir $o_srv/www
 go build -o $o_srv/sr org.cny.sr/main
 cp srd $o_srv
 cp conf/sr.properties $o_srv/conf
+cp conf/local.properties $o_srv/conf
 if [ "$1" != "" ];then
 	curl -o $o_srv/srvd_i $1
 	chmod +x $o_srv/srvd_i

@@ -40,4 +40,4 @@ cat coverage.json | gocov-xml -b $PWD/src > coverage.xml
 cat coverage.json | gocov-html coverage.json > coverage.html
 
 echo "Build main"
-go build org.cny.ags/main
+go build -o sr org.cny.sr/main
