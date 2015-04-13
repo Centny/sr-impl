@@ -22,7 +22,7 @@ SRV_D=$SRV_HOME
 PIDFILE=/var/run/$srv_n.pid
 lockfile=/var/lock/$srv_n.lock
 export GOPATH=$SRV_HOME
-exec=$SRV_D/sr
+exec=$SRV_D/$exe_n
 start() {
     [ -x $exec ] || exit 5
 
