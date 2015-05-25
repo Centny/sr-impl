@@ -23,7 +23,6 @@ mkdir $o_srv/www
 go build -o $o_srv/$n_srv org.cny.sr/main
 cp $d_srv $o_srv
 cp conf/sr.properties $o_srv/conf
-cp conf/local.properties $o_srv/conf
 
 ###
 if [ "$1" != "" ];then

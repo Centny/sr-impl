@@ -17,6 +17,7 @@ echo "Running Test"
 # pkgs="\
 # "
 pkgs="\
+ org.cny.sr/impl\
  org.cny.sr/mr\
 "
 echo "mode: set" > a.out
