@@ -1,6 +1,7 @@
 package srv
 
 import (
+	"github.com/Centny/gwf/log"
 	"github.com/Centny/gwf/routing"
 	"github.com/Centny/gwf/routing/doc"
 	"github.com/Centny/gwf/routing/filter"
@@ -19,7 +20,9 @@ func HSrvMux(smux *http.ServeMux, pre string, www string) {
 	mux.HFilter("^/.*$", cors)
 	sr, srq := impl.NewSr(www + "/sdata")
 	srq.Run(runtime.NumCPU() - 1)
+	log.D("register sr...")
 	mux.H("^/sr(\\?.*)?$", sr)
+	log.D("register mr...")
 	mux.H("^/mr(/.*)?$", mr.NewMR("/mr"))
 	//
 	//
