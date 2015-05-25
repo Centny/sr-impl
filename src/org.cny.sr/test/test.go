@@ -10,7 +10,7 @@ import (
 
 const TDbCon string = "cny:123@loc.srv:27017/test"
 
-var Cfg util.Fcfg = util.Fcfg{}
+var Cfg *util.Fcfg = util.NewFcfg3()
 
 func init() {
 	conf.Cfg = Cfg

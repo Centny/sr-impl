@@ -6,6 +6,7 @@ import (
 	"github.com/Centny/gwf/routing/filter"
 	"net/http"
 	"org.cny.sr/impl"
+	"org.cny.sr/mr"
 	"regexp"
 	"runtime"
 )
@@ -19,6 +20,7 @@ func HSrvMux(smux *http.ServeMux, pre string, www string) {
 	sr, srq := impl.NewSr(www + "/sdata")
 	srq.Run(runtime.NumCPU() - 1)
 	mux.H("^/sr(\\?.*)?$", sr)
+	mux.H("^/mr(/.*)?$", mr.NewMR("/mr"))
 	//
 	//
 	dv := doc.NewDocViewer()

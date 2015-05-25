@@ -15,14 +15,9 @@ echo "Installing Dependence"
 #########Running Test#########
 echo "Running Test"
 # pkgs="\
-#  org.cny.ags/agsdb\
-#  org.cny.ags/agsapi\
-#  org.cny.ags/cws\
-#  org.cny.ags/gaming\
-#  org.cny.ags/gaming/lottery\
 # "
 pkgs="\
- org.cny.sr/impl\
+ org.cny.sr/mr\
 "
 echo "mode: set" > a.out
 for p in $pkgs;
