@@ -102,7 +102,14 @@ func (m *MR) Get(id, path string) (interface{}, error) {
 				},
 			},
 		}).One(&mv)
-		return mv.Val("val"), err
+		if err != nil {
+			return nil, err
+		}
+		if mv.Exist("val") {
+			return mv.Val("val"), err
+		} else {
+			return nil, util.NOT_FOUND
+		}
 	}
 }
 func (m *MR) Del(id, path string) error {
