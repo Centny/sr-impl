@@ -35,7 +35,7 @@ func (m *MR) SrvHTTP(hs *routing.HTTPSession) routing.HResult {
 		id,O|S,L:0;
 		type,O|S,O:I~F~S~J;
 		data,O|S,L:0;
-		exec,O|S,O:S~G~I~D;
+		exec,O|S,O:S~G~I~D~P;
 		`, &id, &typ, &data, &exec)
 	if err != nil {
 		return hs.MsgResErr2(1, "arg-err", err)
@@ -51,6 +51,9 @@ func (m *MR) SrvHTTP(hs *routing.HTTPSession) routing.HResult {
 	case "D":
 		err = m.Del(id, path)
 		val = "OK"
+	case "P":
+		err = m.Push(id, path, typ, data)
+		val = "OK"
 	default:
 		val, err = m.Get(id, path)
 	}
@@ -59,6 +62,30 @@ func (m *MR) SrvHTTP(hs *routing.HTTPSession) routing.HResult {
 	} else {
 		return hs.MsgResErr2(1, "srv-err", err)
 	}
+}
+func (m *MR) Push(id, path, typ, data string) error {
+	var val interface{}
+	var err error
+	switch typ {
+	case "I":
+		val, err = strconv.ParseInt(data, 10, 64)
+	case "F":
+		val, err = strconv.ParseFloat(data, 64)
+	case "S":
+		val = data
+	default:
+		val, err = util.Json2Map(data)
+	}
+	if err != nil {
+		return err
+	}
+	return dbcon.Db().C("mrs").Update(bson.M{
+		"_id": id,
+	}, bson.M{
+		"$push": bson.M{
+			path: val,
+		},
+	})
 }
 func (m *MR) Set(id, path, typ, data string) error {
 	var val interface{}

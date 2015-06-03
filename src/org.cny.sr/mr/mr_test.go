@@ -129,6 +129,52 @@ func TestMr(t *testing.T) {
 		t.Error("error")
 		return
 	}
+	//test push
+	ts.G2("/abc/push/i?exec=P&data=100&type=I")
+	ts.G2("/abc/push/i?exec=P&data=101&type=I")
+	ts.G2("/abc/push/i?exec=P&data=102&type=I")
+	ts.G2("/abc/push/f?exec=P&data=100.1&type=F")
+	ts.G2("/abc/push/f?exec=P&data=101.2&type=F")
+	ts.G2("/abc/push/f?exec=P&data=102.3&type=F")
+	ts.G2("/abc/push/s?exec=P&data=100&type=S")
+	ts.G2("/abc/push/s?exec=P&data=101&type=S")
+	ts.G2("/abc/push/s?exec=P&data=102&type=S")
+	ts.G2("/abc/push/j?exec=P&data=%v&type=J", util.S2Json(util.Map{
+		"x": 1,
+		"y": "2",
+	}))
+	ts.G2("/abc/push/j?exec=P&data=%v&type=J", util.S2Json(util.Map{
+		"x": 2,
+		"y": "2",
+	}))
+	ts.G2("/abc/push/j?exec=P&data=%v&type=J", util.S2Json(util.Map{
+		"x": 3,
+		"y": "2",
+	}))
+	mv, _ = ts.G2("/abc/push/i")
+	if mv.IntVal("code") != 0 {
+		t.Error("error")
+		return
+	}
+	fmt.Println(mv.Val("data"))
+	mv, _ = ts.G2("/abc/push/f")
+	if mv.IntVal("code") != 0 {
+		t.Error("error")
+		return
+	}
+	fmt.Println(mv.Val("data"))
+	mv, _ = ts.G2("/abc/push/j")
+	if mv.IntVal("code") != 0 {
+		t.Error("error")
+		return
+	}
+	fmt.Println(mv.Val("data"))
+	//
+	mv, _ = ts.G2("/abc/push/i?exec=P&data=sdssf&type=I")
+	if mv.IntVal("code") == 0 {
+		t.Error("error")
+		return
+	}
 	//test delete
 	mv, _ = ts.G2("/abc/x/a?exec=D")
 	if mv.IntVal("code") != 0 {
