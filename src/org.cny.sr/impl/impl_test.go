@@ -34,6 +34,7 @@ func run_t(hs *routing.HTTPSession, t *testing.T) {
 		Aid:  "org.cny",
 		Ver:  "0.0.1",
 		Dev:  "a",
+		Rel:  "rel",
 		Evs:  []*pb.Evn{evn},
 		Time: util.Now(),
 	})
@@ -46,6 +47,7 @@ func run_t(hs *routing.HTTPSession, t *testing.T) {
 		Aid:  "org.cny",
 		Ver:  "0.0.1",
 		Dev:  "a",
+		Rel:  "rel",
 		Evs:  []*pb.Evn{evn},
 		Time: util.Now(),
 	})
@@ -58,6 +60,7 @@ func run_t(hs *routing.HTTPSession, t *testing.T) {
 		Aid:  "org.cny",
 		Ver:  "0.0.1",
 		Dev:  "a",
+		Rel:  "rel",
 		Evs:  []*pb.Evn{evn},
 		Time: util.Now(),
 	})
@@ -65,21 +68,22 @@ func run_t(hs *routing.HTTPSession, t *testing.T) {
 		t.Error(err.Error())
 		return
 	}
+	hs.SetVal("rel", "rel")
 	v, err := sq.ListSr(nil, hs, "org.cny", "0.0.1", "", "", 0, 0)
 	if err != nil {
 		t.Error(err.Error())
 		return
 	}
 	vi := v.([]sr.SRH_Q_I)
-	fmt.Println(v)
+	fmt.Println(v, "--->1")
 	v, err = sq.ListSr(nil, hs, "org.cny", "0.0.1", vi[0].Id.(bson.ObjectId).Hex(), "a", 0, 1)
 	if err != nil {
 		t.Error(err.Error())
 		return
 	}
 	vi = v.([]sr.SRH_Q_I)
-	fmt.Println(v)
-	v, err = sq.ListSr(nil, hs, "org.cny", "0.0.1", vi[0].Id.(bson.ObjectId).Hex(), "", 0, 0)
+	fmt.Println(v, "--->2")
+	v, err = sq.ListSr(nil, hs, "org.cny", "0.0.1", vi[1].Id.(bson.ObjectId).Hex(), "", 0, 0)
 	if err != nil {
 		t.Error(err.Error())
 		return

@@ -23,13 +23,14 @@ func (srq *SrQH) Proc(s *sr.SRH_Q, i *sr.SRH_Q_I) error {
 	return dbcon.Db().C("sr").Insert(i)
 }
 func (srq *SrQH) ListSr(s *sr.SRH_Q, hs *routing.HTTPSession, aid, ver, prev, dev string, from, all int64) (interface{}, error) {
-	var action, name string
+	var action, name, rel string
 	var typ int64 = math.MinInt64
 	err := hs.ValidCheckVal(`
 		action,O|S,L:0;
 		name,O|S,L:0;
 		type,O|I,R:0;
-		`, &action, &name, &typ)
+		rel,O|S,L:0;
+		`, &action, &name, &typ, &rel)
 	if err != nil {
 		return nil, err
 	}
@@ -51,6 +52,9 @@ func (srq *SrQH) ListSr(s *sr.SRH_Q, hs *routing.HTTPSession, aid, ver, prev, de
 	if len(dev) > 0 {
 		qa["dev"] = dev
 	}
+	// if len(rel) > 0 {
+	// 	qa["rel"] = rel
+	// }
 	tmatch := bson.M{}
 	if len(action) > 0 {
 		tmatch["evs.action"] = action
@@ -97,6 +101,10 @@ func (srq *SrQH) ListSr(s *sr.SRH_Q, hs *routing.HTTPSession, aid, ver, prev, de
 					"time": "$_id.time",
 					"evs":  "$evs",
 				},
+			}, bson.M{
+				"$sort": bson.M{
+					"time": -1,
+				},
 			},
 		}
 		if all > 0 {
@@ -111,7 +119,7 @@ func (srq *SrQH) ListSr(s *sr.SRH_Q, hs *routing.HTTPSession, aid, ver, prev, de
 		}
 	} else {
 		if all > 0 {
-			err = dbcon.Db().C("sr").Find(qa).All(&res_l)
+			err = dbcon.Db().C("sr").Find(qa).Sort("-time").All(&res_l)
 			return res_l, err
 		} else {
 			err = dbcon.Db().C("sr").Find(qa).One(&res_i)
