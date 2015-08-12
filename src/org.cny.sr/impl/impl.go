@@ -52,9 +52,9 @@ func (srq *SrQH) ListSr(s *sr.SRH_Q, hs *routing.HTTPSession, aid, ver, prev, de
 	if len(dev) > 0 {
 		qa["dev"] = dev
 	}
-	// if len(rel) > 0 {
-	// 	qa["rel"] = rel
-	// }
+	if len(rel) > 0 {
+		qa["rel"] = rel
+	}
 	tmatch := bson.M{}
 	if len(action) > 0 {
 		tmatch["evs.action"] = action
