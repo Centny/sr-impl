@@ -21,6 +21,7 @@ func HSrvMux(smux *http.ServeMux, pre string, www string) {
 	sr, srq := impl.NewSr(www + "/sdata")
 	srq.Run(runtime.NumCPU() - 1)
 	log.D("register sr...")
+	mux.HFilterFunc("^/sr(\\?.*)?$", filter.ParseQuery)
 	mux.H("^/sr(\\?.*)?$", sr)
 	log.D("register mr...")
 	mux.H("^/mr(/.*)?$", mr.NewMR("/mr"))
